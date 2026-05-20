@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Feature xmlns="http://www.sila-standard.org"
+  SiLA2Version="1.1"
+  FeatureVersion="1.0"
+  Originator="astar.edu.sg"
+  Category="instrumentation"
+  MaturityLevel="Draft"
+  Locale="en-us">
+  <Identifier>LACControl</Identifier>
+  <DisplayName>LAC Control</DisplayName>
+  <Description>SiLA 2 feature for the Actuonix LAC linear actuator controller. Exposes motion control, configuration, position queries, and named-position aliases via USB interface.</Description>
+
+  <!-- ════════════════ Motion Commands ════════════════ -->
+
+  <Command>
+    <Identifier>MoveTo</Identifier>
+    <DisplayName>Move To</DisplayName>
+    <Description>Move the actuator to a target position given as a percentage of full stroke (0–100%). Blocks until the move settles.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>TargetPercent</Identifier>
+      <DisplayName>Target Percent</DisplayName>
+      <Description>Target position as a percentage of full stroke (0.0–100.0).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Real</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>100</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>StartPercent</Identifier>
+      <DisplayName>Start Percent</DisplayName>
+      <Description>Position before the move (percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>StartAdc</Identifier>
+      <DisplayName>Start ADC</DisplayName>
+      <Description>Position before the move (raw ADC 0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>EndPercent</Identifier>
+      <DisplayName>End Percent</DisplayName>
+      <Description>Position after the move (percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>EndAdc</Identifier>
+      <DisplayName>End ADC</DisplayName>
+      <Description>Position after the move (raw ADC 0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>TravelPercent</Identifier>
+      <DisplayName>Travel Percent</DisplayName>
+      <Description>Distance travelled (signed, percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>MoveToAlias</Identifier>
+    <DisplayName>Move To Alias</DisplayName>
+    <Description>Move the actuator to a named position alias. Valid aliases: LASER (95%), WHITE_LIGHT (35%), RETRACTED (15%), EXTENDED (85%), MID (50%).</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Alias</Identifier>
+      <DisplayName>Alias</DisplayName>
+      <Description>Named position alias (LASER, WHITE_LIGHT, RETRACTED, EXTENDED, MID).</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Parameter>
+    <Response>
+      <Identifier>StartPercent</Identifier>
+      <DisplayName>Start Percent</DisplayName>
+      <Description>Position before the move (percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>StartAdc</Identifier>
+      <DisplayName>Start ADC</DisplayName>
+      <Description>Position before the move (raw ADC 0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>EndPercent</Identifier>
+      <DisplayName>End Percent</DisplayName>
+      <Description>Position after the move (percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>EndAdc</Identifier>
+      <DisplayName>End ADC</DisplayName>
+      <Description>Position after the move (raw ADC 0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>TravelPercent</Identifier>
+      <DisplayName>Travel Percent</DisplayName>
+      <Description>Distance travelled (signed, percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+  </Command>
+
+  <!-- ════════════════ Configuration ════════════════ -->
+
+  <Command>
+    <Identifier>Configure</Identifier>
+    <DisplayName>Configure</DisplayName>
+    <Description>Set the actuator speed, accuracy, and travel limits. All values are percentages (0–100%).</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>SpeedPercent</Identifier>
+      <DisplayName>Speed Percent</DisplayName>
+      <Description>Movement speed as a percentage of maximum (0.0–100.0).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Real</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>100</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>AccuracyPercent</Identifier>
+      <DisplayName>Accuracy Percent</DisplayName>
+      <Description>Positioning accuracy as a percentage (0.0–100.0). Higher means tighter tolerance.</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Real</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>100</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RetractLimitPercent</Identifier>
+      <DisplayName>Retract Limit Percent</DisplayName>
+      <Description>Retract soft limit as a percentage (0.0–100.0).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Real</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>100</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>ExtendLimitPercent</Identifier>
+      <DisplayName>Extend Limit Percent</DisplayName>
+      <Description>Extend soft limit as a percentage (0.0–100.0).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Real</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>100</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Response>
+  </Command>
+
+  <!-- ════════════════ Status Queries ════════════════ -->
+
+  <Command>
+    <Identifier>GetStatus</Identifier>
+    <DisplayName>Get Status</DisplayName>
+    <Description>Get the current device status including connection state, position, speed, accuracy, and travel limits.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>IsConnected</Identifier>
+      <DisplayName>Is Connected</DisplayName>
+      <Description>True if the device is currently connected.</Description>
+      <DataType><Basic>Boolean</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>CurrentPercent</Identifier>
+      <DisplayName>Current Percent</DisplayName>
+      <Description>Current actuator position (percent).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>CurrentAdc</Identifier>
+      <DisplayName>Current ADC</DisplayName>
+      <Description>Current actuator position (raw ADC 0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>SpeedPercent</Identifier>
+      <DisplayName>Speed Percent</DisplayName>
+      <Description>Configured speed percentage.</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>AccuracyPercent</Identifier>
+      <DisplayName>Accuracy Percent</DisplayName>
+      <Description>Configured accuracy percentage.</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>RetractLimitAdc</Identifier>
+      <DisplayName>Retract Limit ADC</DisplayName>
+      <Description>Retract soft limit (raw ADC).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>ExtendLimitAdc</Identifier>
+      <DisplayName>Extend Limit ADC</DisplayName>
+      <Description>Extend soft limit (raw ADC).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>GetPosition</Identifier>
+    <DisplayName>Get Position</DisplayName>
+    <Description>Read the current actuator position from hardware.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>CurrentPercent</Identifier>
+      <DisplayName>Current Percent</DisplayName>
+      <Description>Current position as a percentage.</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>CurrentAdc</Identifier>
+      <DisplayName>Current ADC</DisplayName>
+      <Description>Current position as raw ADC value (0–1023).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Response>
+  </Command>
+
+</Feature>

@@ -1,0 +1,74 @@
+{
+  "machine_id": "plsystem",
+  "description": "Non-hardware dry-run command sequence for the PL system PUDA driver.",
+  "requires": {
+    "SILA_DRY_RUN": true
+  },
+  "steps": [
+    {
+      "command": "get_status",
+      "args": {}
+    },
+    {
+      "command": "StageXYHoming",
+      "args": {}
+    },
+    {
+      "command": "StageXYMove",
+      "args": {
+        "XPos": 0.0,
+        "YPos": 0.0
+      }
+    },
+    {
+      "command": "StageZSetVoltage",
+      "args": {
+        "Voltage": 1.0
+      }
+    },
+    {
+      "command": "MoveToAlias",
+      "args": {
+        "Alias": "MID"
+      }
+    },
+    {
+      "command": "SwitchLedOutput",
+      "args": {
+        "EnableLedOutput": true
+      }
+    },
+    {
+      "command": "OpenShutter",
+      "args": {
+        "Channel": 1,
+        "Timeout": 5.0
+      }
+    },
+    {
+      "command": "CloseShutter",
+      "args": {
+        "Channel": 1,
+        "Timeout": 5.0
+      }
+    },
+    {
+      "command": "SpectrometerMeasureOnce",
+      "args": {
+        "IntegrationTimeMs": 50.0,
+        "Averages": 1
+      }
+    },
+    {
+      "command": "CaptureAndSave",
+      "args": {
+        "ExposureMs": 10.0,
+        "FileFormat": "png"
+      }
+    },
+    {
+      "command": "get_position",
+      "args": {}
+    }
+  ]
+}

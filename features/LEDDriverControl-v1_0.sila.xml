@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Feature xmlns="http://www.sila-standard.org"
+  SiLA2Version="1.1"
+  FeatureVersion="1.0"
+  Originator="astar.edu.sg"
+  Category="instrumentation"
+  MaturityLevel="Draft"
+  Locale="en-us">
+  <Identifier>LEDDriverControl</Identifier>
+  <DisplayName>LED Driver Control</DisplayName>
+  <Description>SiLA 2 feature for Thorlabs TLDC LED driver. Exposes LED on/off control, LED info, current setpoint, and error query based on LED_system.py.</Description>
+
+  <!-- Command: Switch LED output on or off (TLDC_switchLedOutput) -->
+  <Command>
+    <Identifier>SwitchLedOutput</Identifier>
+    <DisplayName>Switch LED Output</DisplayName>
+    <Description>Turn the LED output on or off.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>EnableLedOutput</Identifier>
+      <DisplayName>Enable LED Output</DisplayName>
+      <Description>True to turn LED on, False to turn LED off.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Status</Identifier>
+      <DisplayName>Status</DisplayName>
+      <Description>VISA status code (0 = success).</Description>
+      <DataType>
+        <Basic>Integer</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- Property: LED information (TLDC_getLedInfo) -->
+  <Property>
+    <Identifier>LedInfo</Identifier>
+    <DisplayName>LED Info</DisplayName>
+    <Description>LED name, serial number, current limit, forward voltage, and wavelength.</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>LEDName</Identifier>
+          <DisplayName>LED Name</DisplayName>
+          <Description>Name of the LED.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>LEDSerialNumber</Identifier>
+          <DisplayName>LED Serial Number</DisplayName>
+          <Description>Serial number of the LED.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>LEDCurrentLimit</Identifier>
+          <DisplayName>LED Current Limit</DisplayName>
+          <Description>Current limit in Amperes.</Description>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>LEDForwardVoltage</Identifier>
+          <DisplayName>LED Forward Voltage</DisplayName>
+          <Description>Forward voltage in Volts.</Description>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>LEDWavelength</Identifier>
+          <DisplayName>LED Wavelength</DisplayName>
+          <Description>Wavelength in nm.</Description>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </Property>
+
+  <!-- Property: Current setpoint (TLDC_getLedCurrentSetpoint, set value) -->
+  <Property>
+    <Identifier>LedCurrentSetpoint</Identifier>
+    <DisplayName>LED Current Setpoint</DisplayName>
+    <Description>LED current setpoint in Amperes (set value).</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Basic>Real</Basic>
+    </DataType>
+  </Property>
+
+  <!-- Property: Last device error (TLDC_errorQuery) -->
+  <Property>
+    <Identifier>LastError</Identifier>
+    <DisplayName>Last Error</DisplayName>
+    <Description>Last device error code and message from the driver.</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>ErrorCode</Identifier>
+          <DisplayName>Error Code</DisplayName>
+          <Description>Device error code (0 = no error).</Description>
+          <DataType>
+            <Basic>Integer</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>ErrorMessage</Identifier>
+          <DisplayName>Error Message</DisplayName>
+          <Description>Human-readable error message.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </Property>
+</Feature>

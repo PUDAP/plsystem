@@ -1,0 +1,15 @@
+[project]
+name = "plsystem"
+version = "0.1.0"
+description = "PUDA edge driver for the PL system SiLA interface"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "puda==0.0.15",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "python-dotenv>=1.2.1",
+    "sila2==0.14.0",
+    "setuptools<81",
+    "websocket-client>=1.8.0",
+]

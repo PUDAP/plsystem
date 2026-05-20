@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Feature xmlns="http://www.sila-standard.org"
+  SiLA2Version="1.1"
+  FeatureVersion="1.0"
+  Originator="astar.edu.sg"
+  Category="instrumentation"
+  MaturityLevel="Draft"
+  Locale="en-us">
+  <Identifier>ShutterControl</Identifier>
+  <DisplayName>Shutter Control</DisplayName>
+  <Description>SiLA 2 feature for the SC30 optical shutter controller. Exposes high-level shutter open/close workflows, mode control, device identification, and channel state queries via serial interface.</Description>
+
+  <!-- ════════════════ High-level Workflows ════════════════ -->
+
+  <Command>
+    <Identifier>OpenShutter</Identifier>
+    <DisplayName>Open Shutter</DisplayName>
+    <Description>Open the shutter on the specified channel. Automatically prepares manual control mode, unlocks, enables the channel, triggers open, and waits for confirmation.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Channel</Identifier>
+      <DisplayName>Channel</DisplayName>
+      <Description>Shutter channel number (1 or 2).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Integer</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>1</MinimalInclusive>
+            <MaximalInclusive>2</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>Timeout</Identifier>
+      <DisplayName>Timeout</DisplayName>
+      <Description>Maximum time in seconds to wait for the shutter to reach the open state.</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if the shutter reached the open state within the timeout.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>CloseShutter</Identifier>
+    <DisplayName>Close Shutter</DisplayName>
+    <Description>Close the shutter on the specified channel. Automatically prepares manual control mode, unlocks, enables the channel, triggers close, and waits for confirmation.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Channel</Identifier>
+      <DisplayName>Channel</DisplayName>
+      <Description>Shutter channel number (1 or 2).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Integer</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>1</MinimalInclusive>
+            <MaximalInclusive>2</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>Timeout</Identifier>
+      <DisplayName>Timeout</DisplayName>
+      <Description>Maximum time in seconds to wait for the shutter to reach the closed state.</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if the shutter reached the closed state within the timeout.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- ════════════════ High-level Commands ════════════════ -->
+
+  <Command>
+    <Identifier>Identify</Identifier>
+    <DisplayName>Identify</DisplayName>
+    <Description>Query the device identification string from the SC30 controller.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>DeviceId</Identifier>
+      <DisplayName>Device ID</DisplayName>
+      <Description>Identification string returned by the device.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>GetMode</Identifier>
+    <DisplayName>Get Mode</DisplayName>
+    <Description>Query the current operating mode of the shutter controller. Mode values: 0=Manual, 1=External, 2=Internal, 3=Triggered.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>Mode</Identifier>
+      <DisplayName>Mode</DisplayName>
+      <Description>Current operating mode string as returned by the device.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>SetMode</Identifier>
+    <DisplayName>Set Mode</DisplayName>
+    <Description>Set the operating mode of the shutter controller. 0=Manual, 1=External, 2=Internal, 3=Triggered.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Mode</Identifier>
+      <DisplayName>Mode</DisplayName>
+      <Description>Operating mode (0=Manual, 1=External, 2=Internal, 3=Triggered).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Integer</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>0</MinimalInclusive>
+            <MaximalInclusive>3</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Reply</Identifier>
+      <DisplayName>Reply</DisplayName>
+      <Description>Raw reply from the shutter controller.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>GetShutterState</Identifier>
+    <DisplayName>Get Shutter State</DisplayName>
+    <Description>Query the current state of the shutter on the specified channel.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Channel</Identifier>
+      <DisplayName>Channel</DisplayName>
+      <Description>Shutter channel number (1 or 2).</Description>
+      <DataType>
+        <Constrained>
+          <DataType><Basic>Integer</Basic></DataType>
+          <Constraints>
+            <MinimalInclusive>1</MinimalInclusive>
+            <MaximalInclusive>2</MaximalInclusive>
+          </Constraints>
+        </Constrained>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>IsOpen</Identifier>
+      <DisplayName>Is Open</DisplayName>
+      <Description>True if the shutter is currently open.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>RawState</Identifier>
+      <DisplayName>Raw State</DisplayName>
+      <Description>Raw shutter state string from the device.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+</Feature>

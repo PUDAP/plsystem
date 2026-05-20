@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Feature xmlns="http://www.sila-standard.org"
+  SiLA2Version="1.1"
+  FeatureVersion="1.0"
+  Originator="astar.edu.sg"
+  Category="instrumentation"
+  MaturityLevel="Draft"
+  Locale="en-us">
+  <Identifier>ThorlabsCameraControl</Identifier>
+  <DisplayName>Thorlabs Camera Control</DisplayName>
+  <Description>SiLA 2 feature for Thorlabs Compact Scientific USB cameras via thorlabs_tsi_sdk (Scientific Camera Interfaces). Wraps the Photoluminescense/camera package: sdk_runtime (DLLs and SDK singletons), device_info (discovery), camera (session: exposure, gain, ROI, software trigger, color pipeline), capture_io (save path and auto filenames). Environment: THORLABS_CAMERA_DLL_DIR, THORLABS_CAMERA_SERIAL, THORLABS_CAMERA_SAVE_DIR.</Description>
+
+  <!-- Property: mirror of camera_device_info() + SDK load flag -->
+  <Property>
+    <Identifier>ThorlabsCameraDeviceInfo</Identifier>
+    <DisplayName>Thorlabs Camera Device Info</DisplayName>
+    <Description>SDK availability, discovery, and open-camera metadata (serial, model, resolution, etc.).</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>SdkAvailable</Identifier>
+          <DisplayName>Sdk Available</DisplayName>
+          <Description>True if thorlabs_tsi_sdk and native DLLs loaded successfully.</Description>
+          <DataType><Basic>Boolean</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>Connected</Identifier>
+          <DisplayName>Connected</DisplayName>
+          <Description>True if a camera was opened for metadata read.</Description>
+          <DataType><Basic>Boolean</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>Description</Identifier>
+          <DisplayName>Description</DisplayName>
+          <Description>Fixed description string for this device class.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>SerialNumber</Identifier>
+          <DisplayName>Serial Number</DisplayName>
+          <Description>Camera serial used for metadata.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>Model</Identifier>
+          <DisplayName>Model</DisplayName>
+          <Description>Camera model string.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>FirmwareVersion</Identifier>
+          <DisplayName>Firmware Version</DisplayName>
+          <Description>Firmware version string.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>SensorType</Identifier>
+          <DisplayName>Sensor Type</DisplayName>
+          <Description>Sensor type name (e.g. BAYER, MONOCHROME).</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>ResolutionWidth</Identifier>
+          <DisplayName>Resolution Width</DisplayName>
+          <Description>Image width in pixels.</Description>
+          <DataType><Basic>Integer</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>ResolutionHeight</Identifier>
+          <DisplayName>Resolution Height</DisplayName>
+          <Description>Image height in pixels.</Description>
+          <DataType><Basic>Integer</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>PixelSizeUmX</Identifier>
+          <DisplayName>Pixel Size Um X</DisplayName>
+          <Description>Pixel width in micrometers.</Description>
+          <DataType><Basic>Real</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>PixelSizeUmY</Identifier>
+          <DisplayName>Pixel Size Um Y</DisplayName>
+          <Description>Pixel height in micrometers.</Description>
+          <DataType><Basic>Real</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>BitDepth</Identifier>
+          <DisplayName>Bit Depth</DisplayName>
+          <Description>Sensor bit depth.</Description>
+          <DataType><Basic>Integer</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>AvailableCamerasCsv</Identifier>
+          <DisplayName>Available Cameras Csv</DisplayName>
+          <Description>Comma-separated list of discovered camera serial numbers.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+        <Element>
+          <Identifier>Error</Identifier>
+          <DisplayName>Error</DisplayName>
+          <Description>Error message if any; empty if none.</Description>
+          <DataType><Basic>String</Basic></DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </Property>
+
+  <Command>
+    <Identifier>DisposeThorlabsCameraSdk</Identifier>
+    <DisplayName>Dispose Thorlabs Camera Sdk</DisplayName>
+    <Description>Release shared TLCameraSDK and mono-to-color SDK handles (call before exit or when switching processes).</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if disposal completed without exception.</Description>
+      <DataType><Basic>Boolean</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Response>
+  </Command>
+
+  <Command>
+    <Identifier>CaptureAndSave</Identifier>
+    <DisplayName>Capture And Save</DisplayName>
+    <Description>Acquire one software-triggered frame and save under THORLABS_CAMERA_SAVE_DIR (see .env). Filename is yyMMdd_HHmmss_mmm.FileFormat. Camera serial is read from THORLABS_CAMERA_SERIAL only. Use GainDb=-1 to omit gain; FrameRateFps=-1 to disable frame-rate limit; UseRoi=false to ignore ROI fields.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>ExposureMs</Identifier>
+      <DisplayName>Exposure Ms</DisplayName>
+      <Description>Exposure time in milliseconds.</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>FileFormat</Identifier>
+      <DisplayName>File Format</DisplayName>
+      <Description>File extension without dot (e.g. jpg, png, tif).</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>GainDb</Identifier>
+      <DisplayName>Gain Db</DisplayName>
+      <Description>Analog gain in dB; set to -1.0 to use camera default (omit).</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>BinX</Identifier>
+      <DisplayName>Bin X</DisplayName>
+      <Description>Horizontal binning (1 for color Bayer cameras).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>BinY</Identifier>
+      <DisplayName>Bin Y</DisplayName>
+      <Description>Vertical binning (1 for color Bayer cameras).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>FrameRateFps</Identifier>
+      <DisplayName>Frame Rate Fps</DisplayName>
+      <Description>Frame rate cap; -1 disables frame-rate control.</Description>
+      <DataType><Basic>Real</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>OutputBitDepth</Identifier>
+      <DisplayName>Output Bit Depth</DisplayName>
+      <Description>8 or 16 for RGB output bit depth on color cameras.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>UseRoi</Identifier>
+      <DisplayName>Use Roi</DisplayName>
+      <Description>If true, apply ROI from the four corner parameters.</Description>
+      <DataType><Basic>Boolean</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RoiUpperLeftX</Identifier>
+      <DisplayName>Roi Upper Left X</DisplayName>
+      <Description>ROI upper-left X pixel.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RoiUpperLeftY</Identifier>
+      <DisplayName>Roi Upper Left Y</DisplayName>
+      <Description>ROI upper-left Y pixel.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RoiLowerRightX</Identifier>
+      <DisplayName>Roi Lower Right X</DisplayName>
+      <Description>ROI lower-right X pixel.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>RoiLowerRightY</Identifier>
+      <DisplayName>Roi Lower Right Y</DisplayName>
+      <Description>ROI lower-right Y pixel.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if file was written.</Description>
+      <DataType><Basic>Boolean</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>FilePath</Identifier>
+      <DisplayName>File Path</DisplayName>
+      <Description>Absolute path of saved image.</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Response>
+    <Response>
+      <Identifier>ErrorMessage</Identifier>
+      <DisplayName>Error Message</DisplayName>
+      <Description>Empty on success; error text on failure.</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Response>
+  </Command>
+</Feature>

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Feature xmlns="http://www.sila-standard.org"
+  SiLA2Version="1.1"
+  FeatureVersion="1.0"
+  Originator="astar.edu.sg"
+  Category="instrumentation"
+  MaturityLevel="Draft"
+  Locale="en-us">
+  <Identifier>PLStageControl</Identifier>
+  <DisplayName>PL Stage Control</DisplayName>
+  <Description>SiLA 2 feature for Photoluminescence system: Thorlabs XY stage (Benchtop Brushless Motor) and Z stage (Benchtop Piezo). Exposes move, homing, device info, and Z voltage control based on PL_system_main.py.</Description>
+
+  <!-- Command: Move XY stage to position (stage_move) -->
+  <Command>
+    <Identifier>StageXYMove</Identifier>
+    <DisplayName>Stage XY Move</DisplayName>
+    <Description>Move the XY stage to the specified X and Y coordinates in millimeters.</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>XPos</Identifier>
+      <DisplayName>X Position</DisplayName>
+      <Description>Target X position in mm (Channel 1).</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>YPos</Identifier>
+      <DisplayName>Y Position</DisplayName>
+      <Description>Target Y position in mm (Channel 2).</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if move completed successfully.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- Command: XY stage homing (xy_stage_homing) -->
+  <Command>
+    <Identifier>StageXYHoming</Identifier>
+    <DisplayName>Stage XY Homing</DisplayName>
+    <Description>Run homing on the XY stage and move to center position.</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if homing completed successfully.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- Command: Move XY to catch position (stage_catch) -->
+  <Command>
+    <Identifier>StageXYToCatch</Identifier>
+    <DisplayName>Stage XY To Catch</DisplayName>
+    <Description>Move XY stage to catch position (X=0 mm, Y=75 mm).</Description>
+    <Observable>No</Observable>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if move completed successfully.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- Command: Set Z stage voltage (stage_z_movement_control) -->
+  <Command>
+    <Identifier>StageZSetVoltage</Identifier>
+    <DisplayName>Stage Z Set Voltage</DisplayName>
+    <Description>Set Z axis output voltage in Volts (0.0 to 150.0).</Description>
+    <Observable>No</Observable>
+    <Parameter>
+      <Identifier>Voltage</Identifier>
+      <DisplayName>Voltage</DisplayName>
+      <Description>Target voltage in Volts (0.0 - 150.0).</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Parameter>
+    <Response>
+      <Identifier>Success</Identifier>
+      <DisplayName>Success</DisplayName>
+      <Description>True if voltage was set successfully.</Description>
+      <DataType>
+        <Basic>Boolean</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>SetVoltage</Identifier>
+      <DisplayName>Set Voltage</DisplayName>
+      <Description>Actual voltage set in Volts.</Description>
+      <DataType>
+        <Basic>Real</Basic>
+      </DataType>
+    </Response>
+    <Response>
+      <Identifier>Message</Identifier>
+      <DisplayName>Message</DisplayName>
+      <Description>Status or error message.</Description>
+      <DataType>
+        <Basic>String</Basic>
+      </DataType>
+    </Response>
+  </Command>
+
+  <!-- Property: XY stage device info (stage_xy_device_info) -->
+  <Property>
+    <Identifier>StageXYDeviceInfo</Identifier>
+    <DisplayName>Stage XY Device Info</DisplayName>
+    <Description>XY stage connection status, description, serial number, firmware version, and error if any.</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Connected</Identifier>
+          <DisplayName>Connected</DisplayName>
+          <Description>True if device is connected.</Description>
+          <DataType>
+            <Basic>Boolean</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Description</Identifier>
+          <DisplayName>Description</DisplayName>
+          <Description>Device description or name.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>SerialNumber</Identifier>
+          <DisplayName>Serial Number</DisplayName>
+          <Description>Device serial number.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>FirmwareVersion</Identifier>
+          <DisplayName>Firmware Version</DisplayName>
+          <Description>Firmware version string.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Error</Identifier>
+          <DisplayName>Error</DisplayName>
+          <Description>Error message if connection or read failed; empty if none.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </Property>
+
+  <!-- Property: Z stage device info (stage_z_device_info) -->
+  <Property>
+    <Identifier>StageZDeviceInfo</Identifier>
+    <DisplayName>Stage Z Device Info</DisplayName>
+    <Description>Z stage connection status, description, serial number, max/current voltage, and error if any.</Description>
+    <Observable>No</Observable>
+    <DataType>
+      <Structure>
+        <Element>
+          <Identifier>Connected</Identifier>
+          <DisplayName>Connected</DisplayName>
+          <Description>True if device is connected.</Description>
+          <DataType>
+            <Basic>Boolean</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Description</Identifier>
+          <DisplayName>Description</DisplayName>
+          <Description>Device description.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>SerialNumber</Identifier>
+          <DisplayName>Serial Number</DisplayName>
+          <Description>Device serial number.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>MaxVoltage</Identifier>
+          <DisplayName>Max Voltage</DisplayName>
+          <Description>Maximum allowed voltage in Volts (e.g. 150.0).</Description>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>CurrentVoltage</Identifier>
+          <DisplayName>Current Voltage</DisplayName>
+          <Description>Current output voltage in Volts.</Description>
+          <DataType>
+            <Basic>Real</Basic>
+          </DataType>
+        </Element>
+        <Element>
+          <Identifier>Error</Identifier>
+          <DisplayName>Error</DisplayName>
+          <Description>Error message if connection or read failed; empty if none.</Description>
+          <DataType>
+            <Basic>String</Basic>
+          </DataType>
+        </Element>
+      </Structure>
+    </DataType>
+  </Property>
+</Feature>
