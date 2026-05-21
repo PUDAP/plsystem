@@ -68,20 +68,6 @@ For local tests without hardware:
 SILA_DRY_RUN=true
 ```
 
-Safety fields:
-
-```env
-LAC_MIN_PERCENT=0
-LAC_MAX_PERCENT=100
-STAGE_X_MIN_MM=
-STAGE_X_MAX_MM=
-STAGE_Y_MIN_MM=
-STAGE_Y_MAX_MM=
-STAGE_Z_MIN_VOLTAGE=0
-STAGE_Z_MAX_VOLTAGE=150
-DEFAULT_SHUTTER_TIMEOUT=5
-```
-
 ## Run Locally
 
 ```powershell
@@ -121,7 +107,7 @@ uv run python -c "from driver import Driver; d=Driver('127.0.0.1', dry_run=True)
 Then validate against the lab SiLA server:
 
 1. Start the PL system SiLA server.
-2. Set `SILA_HOST`, `SILA_PORT`, TLS/certificate settings, and safety limits.
+2. Set `SILA_HOST`, `SILA_PORT`, and TLS/certificate settings.
 3. Run `uv run python main.py`.
 4. From PUDA, call `get_status`, then non-motion queries such as `Identify` and `GetMode`.
 5. Only after lab approval, call bounded stage, actuator, shutter, spectrometer, and camera commands.

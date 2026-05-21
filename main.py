@@ -27,25 +27,15 @@ logger = logging.getLogger(__name__)
 
 
 class Config(BaseSettings):
-    machine_id: str = "plsystem"
+    machine_id: str
     nats_servers: str
 
     sila_host: str
-    sila_port: int = 50054
-    sila_tls: bool = True
-    sila_insecure: bool = False
-    sila_root_cert_path: str | None = None
-    sila_dry_run: bool = False
-
-    lac_min_percent: float = 0.0
-    lac_max_percent: float = 100.0
-    stage_x_min_mm: float | None = None
-    stage_x_max_mm: float | None = None
-    stage_y_min_mm: float | None = None
-    stage_y_max_mm: float | None = None
-    stage_z_min_voltage: float = 0.0
-    stage_z_max_voltage: float = 150.0
-    default_shutter_timeout: float = 5.0
+    sila_port: int
+    sila_tls: bool
+    sila_insecure: bool
+    sila_root_cert_path: str
+    sila_dry_run: bool
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -79,15 +69,6 @@ async def main() -> None:
         sila_insecure=config.sila_insecure,
         sila_root_cert_path=config.sila_root_cert_path,
         dry_run=config.sila_dry_run,
-        lac_min_percent=config.lac_min_percent,
-        lac_max_percent=config.lac_max_percent,
-        stage_x_min_mm=config.stage_x_min_mm,
-        stage_x_max_mm=config.stage_x_max_mm,
-        stage_y_min_mm=config.stage_y_min_mm,
-        stage_y_max_mm=config.stage_y_max_mm,
-        stage_z_min_voltage=config.stage_z_min_voltage,
-        stage_z_max_voltage=config.stage_z_max_voltage,
-        default_shutter_timeout=config.default_shutter_timeout,
     )
     driver.startup()
 
