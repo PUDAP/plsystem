@@ -202,6 +202,36 @@
       <Description>ROI lower-right Y pixel.</Description>
       <DataType><Basic>Integer</Basic></DataType>
     </Parameter>
+    <Parameter>
+      <Identifier>BlackLevel</Identifier>
+      <DisplayName>Black Level</DisplayName>
+      <Description>Black level offset in ADU; set to -1 to use the camera default (omit).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>HotPixelThreshold</Identifier>
+      <DisplayName>Hot Pixel Threshold</DisplayName>
+      <Description>Hot-pixel correction threshold; set to -1 to disable hot-pixel correction.</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>PollTimeoutMs</Identifier>
+      <DisplayName>Poll Timeout Ms</DisplayName>
+      <Description>Per-frame polling timeout in milliseconds; set to 0 to use the default (2000 ms).</Description>
+      <DataType><Basic>Integer</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>LedOn</Identifier>
+      <DisplayName>Led On</DisplayName>
+      <Description>Whether to turn on the camera rear-panel status LED.</Description>
+      <DataType><Basic>Boolean</Basic></DataType>
+    </Parameter>
+    <Parameter>
+      <Identifier>OutputColorSpace</Identifier>
+      <DisplayName>Output Color Space</DisplayName>
+      <Description>Color space for color cameras: "sRGB" (default) or "linear".</Description>
+      <DataType><Basic>String</Basic></DataType>
+    </Parameter>
     <Response>
       <Identifier>Success</Identifier>
       <DisplayName>Success</DisplayName>

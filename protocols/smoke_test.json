@@ -61,10 +61,7 @@
     },
     {
       "command": "CaptureAndSave",
-      "args": {
-        "ExposureMs": 10.0,
-        "FileFormat": "png"
-      }
+      "args": {}
     },
     {
       "command": "get_position",

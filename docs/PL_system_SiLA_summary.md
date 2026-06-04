@@ -44,5 +44,5 @@ Mode values: `0=Manual`, `1=External`, `2=Internal`, `3=Triggered`.
 ## ThorlabsCameraControl
 
 - `DisposeThorlabsCameraSdk()` -> `Success`, `Message`
-- `CaptureAndSave(ExposureMs, FileFormat, GainDb, BinX, BinY, FrameRateFps, OutputBitDepth, UseRoi, RoiUpperLeftX, RoiUpperLeftY, RoiLowerRightX, RoiLowerRightY)` -> `Success`, `FilePath`, `ErrorMessage`
+- `CaptureAndSave()` (driver uses SiLA-documented defaults via `CAPTURE_AND_SAVE_DEFAULTS`) -> `Success`, `FilePath`, `ErrorMessage`
 - Property: `ThorlabsCameraDeviceInfo`

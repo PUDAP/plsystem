@@ -109,5 +109,27 @@ class TestDriverGetStatus(unittest.TestCase):
         self.assertEqual(status["ShutterControl"]["Channel1"], mock_safe_command.return_value)
 
 
+class TestDriverCameraCapture(unittest.TestCase):
+    def test_camera_capture_and_save_dry_run(self) -> None:
+        drv = Driver("127.0.0.1", dry_run=True)
+        drv.startup()
+        result = drv.camera_capture_and_save()
+        self.assertTrue(result["success"])
+        self.assertEqual(result["FilePath"], "dry-run/camera_capture.png")
+
+    @patch.object(Driver, "_call")
+    def test_capture_and_save_passes_all_sila_parameters(self, mock_call: MagicMock) -> None:
+        mock_call.return_value = {"success": True, "Success": True, "FilePath": "/tmp/x.png"}
+        drv = Driver("127.0.0.1", dry_run=False)
+
+        drv.CaptureAndSave()
+
+        mock_call.assert_called_once_with(
+            "ThorlabsCameraControl",
+            "CaptureAndSave",
+            **Driver.CAPTURE_AND_SAVE_DEFAULTS,
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

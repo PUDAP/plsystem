@@ -78,7 +78,7 @@ uv run python main.py
 For a dry-run driver smoke test:
 
 ```powershell
-uv run python -c "from driver import Driver; d=Driver('127.0.0.1', dry_run=True); d.startup(); print(d.StageXYHoming()); print(d.MoveToAlias('MID')); print(d.SwitchLedOutput(True)); print(d.OpenShutter(1)); print(d.SpectrometerMeasureOnce(50, 1)); print(d.CaptureAndSave(10)); print(d.get_status())"
+uv run python -c "from driver import Driver; d=Driver('127.0.0.1', dry_run=True); d.startup(); print(d.StageXYHoming()); print(d.MoveToAlias('MID')); print(d.SwitchLedOutput(True)); print(d.OpenShutter(1)); print(d.SpectrometerMeasureOnce(50, 1)); print(d.CaptureAndSave()); print(d.get_status())"
 ```
 
 ## Run With Docker

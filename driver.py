@@ -34,6 +34,27 @@ class Driver:
         "ThorlabsCameraControl": ("ThorlabsCameraDeviceInfo",),
     }
 
+    # ThorlabsCameraControl.CaptureAndSave — values match SiLA server semantics.
+    CAPTURE_AND_SAVE_DEFAULTS: dict[str, Any] = {
+        "ExposureMs": 30.0,
+        "FileFormat": "png",
+        "GainDb": -1.0,
+        "BinX": 1,
+        "BinY": 1,
+        "FrameRateFps": -1.0,
+        "OutputBitDepth": 8,
+        "UseRoi": False,
+        "RoiUpperLeftX": 0,
+        "RoiUpperLeftY": 0,
+        "RoiLowerRightX": 0,
+        "RoiLowerRightY": 0,
+        "BlackLevel": -1,
+        "HotPixelThreshold": -1,
+        "PollTimeoutMs": 0,
+        "LedOn": False,
+        "OutputColorSpace": "sRGB",
+    }
+
     def __init__(
         self,
         sila_host: str,
@@ -353,46 +374,24 @@ class Driver:
         """Release shared Thorlabs camera SDK handles."""
         return self._call("ThorlabsCameraControl", "DisposeThorlabsCameraSdk")
 
-    def CaptureAndSave(
-        self,
-        ExposureMs: float,
-        FileFormat: str = "png",
-        GainDb: float = -1.0,
-        BinX: int = 1,
-        BinY: int = 1,
-        FrameRateFps: float = -1.0,
-        OutputBitDepth: int = 8,
-        UseRoi: bool = False,
-        RoiUpperLeftX: int = 0,
-        RoiUpperLeftY: int = 0,
-        RoiLowerRightX: int = 0,
-        RoiLowerRightY: int = 0,
-    ) -> dict[str, Any]:
-        """Acquire one Thorlabs camera frame and save it on the SiLA server."""
-        exposure_ms = float(ExposureMs)
+    def CaptureAndSave(self) -> dict[str, Any]:
+        """Acquire one Thorlabs camera frame and save it using SiLA default parameters."""
+        params = dict(self.CAPTURE_AND_SAVE_DEFAULTS)
+        exposure_ms = float(params["ExposureMs"])
         if exposure_ms <= 0:
             raise ValueError("ExposureMs must be positive")
-        file_format = str(FileFormat).lower().lstrip(".")
+        file_format = str(params["FileFormat"]).lower().lstrip(".")
         if file_format not in {"jpg", "jpeg", "png", "tif", "tiff"}:
             raise ValueError("FileFormat must be jpg, jpeg, png, tif, or tiff")
-        if int(OutputBitDepth) not in {8, 16}:
+        if int(params["OutputBitDepth"]) not in {8, 16}:
             raise ValueError("OutputBitDepth must be 8 or 16")
-        return self._call(
-            "ThorlabsCameraControl",
-            "CaptureAndSave",
-            ExposureMs=exposure_ms,
-            FileFormat=file_format,
-            GainDb=float(GainDb),
-            BinX=int(BinX),
-            BinY=int(BinY),
-            FrameRateFps=float(FrameRateFps),
-            OutputBitDepth=int(OutputBitDepth),
-            UseRoi=bool(UseRoi),
-            RoiUpperLeftX=int(RoiUpperLeftX),
-            RoiUpperLeftY=int(RoiUpperLeftY),
-            RoiLowerRightX=int(RoiLowerRightX),
-            RoiLowerRightY=int(RoiLowerRightY),
-        )
+        color_space = str(params["OutputColorSpace"])
+        if color_space not in {"sRGB", "linear"}:
+            raise ValueError('OutputColorSpace must be "sRGB" or "linear"')
+        params["ExposureMs"] = exposure_ms
+        params["FileFormat"] = file_format
+        params["OutputColorSpace"] = color_space
+        return self._call("ThorlabsCameraControl", "CaptureAndSave", **params)
 
     # Pythonic aliases for protocol authors that prefer snake_case.
     def lac_move_to(self, target_percent: float) -> dict[str, Any]:
@@ -419,8 +418,8 @@ class Driver:
     def spectrometer_measure_once(self, integration_time_ms: float, averages: int) -> dict[str, Any]:
         return self.SpectrometerMeasureOnce(IntegrationTimeMs=integration_time_ms, Averages=averages)
 
-    def camera_capture_and_save(self, exposure_ms: float, file_format: str = "png") -> dict[str, Any]:
-        return self.CaptureAndSave(ExposureMs=exposure_ms, FileFormat=file_format)
+    def camera_capture_and_save(self) -> dict[str, Any]:
+        return self.CaptureAndSave()
 
     def _call(self, feature_name: str, command_name: str, **kwargs: Any) -> dict[str, Any]:
         self._last_command = f"{feature_name}.{command_name}"
