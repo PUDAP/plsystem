@@ -78,24 +78,25 @@ async def main() -> None:
     )
 
     async def telemetry_handler() -> None:
-        status = driver.get_status()
+        #status = driver.get_status()
         await edge_nats_client.publish_heartbeat()
-        await edge_nats_client.publish_position(driver.get_position())
-        await edge_nats_client.publish_health(
-            {
-                "sila_host": config.sila_host,
-                "sila_port": config.sila_port,
-                "sila_connected": status["sila_connected"],
-                "connection_status": status["connection_status"],
-                "last_error": status["last_error"],
-            }
-        )
+        
+        #await edge_nats_client.publish_position(driver.get_position())
+        #await edge_nats_client.publish_health(
+        #    {
+        #        "sila_host": config.sila_host,
+        #        "sila_port": config.sila_port,
+        #        "sila_connected": status["sila_connected"],
+        #        "connection_status": status["connection_status"],
+        #        "last_error": status["last_error"],
+        #    }
+        #)
 
     runner = EdgeRunner(
         nats_client=edge_nats_client,
         machine_driver=driver,
         telemetry_handler=telemetry_handler,
-        state_handler=driver.get_status,
+        state_handler=None,
     )
     await runner.connect()
     logger.info("==================== %s Edge Service Ready ====================", config.machine_id)
