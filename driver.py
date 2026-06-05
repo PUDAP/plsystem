@@ -53,6 +53,9 @@ class Driver:
         "PollTimeoutMs": 0,
         "LedOn": False,
         "OutputColorSpace": "sRGB",
+        "WhiteBalanceRed": 1.0,
+        "WhiteBalanceGreen": 1.0,
+        "WhiteBalanceBlue": 1.0,
     }
 
     def __init__(
